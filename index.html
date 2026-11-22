@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>kuviwwl 的主页</title>
+<style>
+#dragAvatar{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  box-shadow:0 3px 12px #00000033;
+  z-index:999;
+  cursor:move;
+  user-select:none;
+  transition: transform 0.2s;
+}
+#dragAvatar:hover{transform: scale(1.1);}
+</style>
+</head>
+<body>
+<h1>欢迎</h1>
+<p>右下角可以拖动的悬浮头像</p>
+
+<img id="dragAvatar" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png">
+
+<script>
+const el = document.getElementById('dragAvatar');
+let drag = false,ox,oy;
+el.onmousedown = e=>{drag=true;ox=e.clientX-el.offsetLeft;oy=e.clientY-el.offsetTop;}
+document.onmousemove = e=>{
+  if(!drag)return;
+  let x = e.clientX - ox;
+  let y = e.clientY - oy;
+  x = Math.max(0, Math.min(x, window.innerWidth - el.offsetWidth));
+  y = Math.max(0, Math.min(y, window.innerHeight - el.offsetHeight));
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el.style.right='auto';el.style.bottom='auto';
+}
+document.onmouseup = ()=>{
+  drag=false;
+  const rect = el.getBoundingClientRect();
+  if(rect.left < window.innerWidth/2) el.style.left=0;
+  else el.style.right=0,el.style.left='auto';
+}
+el.onclick = ()=>window.open("https://github.com/kuviwwl")
+</script>
+</body>
+</html>
